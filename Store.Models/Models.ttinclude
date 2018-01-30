@@ -1,0 +1,13 @@
+﻿<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+<#+
+// Container for settings that can vary by project
+public static class ModelsTemplateSettings
+{
+	public const string EdmxFilePath = @"../Store.Repository/DataStore.edmx";
+	public const string ModelBaseClassType = "Store.Model.ModelBase";
+}
+#>

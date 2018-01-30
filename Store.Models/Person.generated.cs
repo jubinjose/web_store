@@ -7,12 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Store.Repository
+namespace Store.Model
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Person
+    public partial class Person:
+    Store.Model.ModelBase
     {
         public int ID { get; set; }
         public string FirstName { get; set; }
