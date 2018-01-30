@@ -86,6 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -102,8 +103,17 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\" />
     <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Store.Models\Store.Model.csproj">
+      <Project>{83928896-431b-417e-8b44-c6a28b24bb4e}</Project>
+      <Name>Store.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Store.Repository\Store.Repository.csproj">
+      <Project>{dfc88363-ed12-471d-9224-93b5bfaf39ac}</Project>
+      <Name>Store.Repository</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
