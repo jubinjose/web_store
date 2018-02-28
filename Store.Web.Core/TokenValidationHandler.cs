@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
@@ -61,8 +62,14 @@ namespace Store.Web.Core
                     IssuerSigningKey = securityKey
                 };
                 //extract and assign the user of the jwt
-                Thread.CurrentPrincipal = handler.ValidateToken(token, validationParameters, out securityToken);
-                HttpContext.Current.User = handler.ValidateToken(token, validationParameters, out securityToken);
+                ClaimsPrincipal principal = handler.ValidateToken(token, validationParameters, out securityToken);
+
+                Thread.CurrentPrincipal = principal;
+
+                if (HttpContext.Current != null)
+                {
+                    HttpContext.Current.User = principal;
+                }
 
                 return base.SendAsync(request, cancellationToken);
             }

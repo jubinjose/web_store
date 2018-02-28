@@ -18,7 +18,7 @@ namespace Store.WebApi.Controllers
     {
         IAuthenticationService _service = new AuthenticationService();
 
-        [Route("api/auth/Login")]
+        [Route("api/auth/login")]
         [HttpPost]
         [AllowAnonymous()]
         public IHttpActionResult LogOn([FromBody] LoginRequest request)
@@ -27,10 +27,21 @@ namespace Store.WebApi.Controllers
             if (result.Success)
             {
                 var token = CreateToken(request.UserName);
-                return Ok(token);
+                return Ok(OpResult<string>.SuccessResult(token));
             }
+
             return Ok(result);
         }
+
+        [Route("api/auth/check")]
+        [HttpGet]
+        [Authorize]
+        public IHttpActionResult CheckIfLoggedIn()
+        {
+            return Ok("Logged in");
+        }
+
+
 
         private string CreateToken(string userName)
         {
@@ -55,8 +66,7 @@ namespace Store.WebApi.Controllers
 
 
             //create the jwt
-            var token =
-                (JwtSecurityToken)
+            var token = 
                     tokenHandler.CreateJwtSecurityToken(issuer: "http://localhost:80", audience: "http://localhost:80",
                         subject: claimsIdentity, notBefore: issuedAt, expires: expires, signingCredentials: signingCredentials);
             var tokenString = tokenHandler.WriteToken(token);
