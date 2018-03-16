@@ -7,6 +7,8 @@ using System.Web.Http;
 
 namespace Store.WebApi.Controllers
 {
+    [RoutePrefix("api/account")]
+
     public class AccountController : ApiController
     {
         // GET: api/Account

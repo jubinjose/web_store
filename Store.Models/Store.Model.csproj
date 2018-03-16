@@ -44,7 +44,7 @@
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
     <Compile Include="ModelBase.cs" />
-    <Compile Include="Models1.generated.cs">
+    <Compile Include="Models.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Models.tt</DependentUpon>
@@ -64,7 +64,7 @@
   <ItemGroup>
     <Content Include="Models.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Models1.generated.cs</LastGenOutput>
+      <LastGenOutput>Models.generated.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

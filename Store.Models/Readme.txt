@@ -28,11 +28,11 @@ Also note that you may need to choose "Run Custom Tool" from the context menu fo
 7. Edit the newly created tt file to update the edmx path from
    @"DataStore.edmx" to @"../Store.Repository/DataStore.edmx"
 
-8. Can specify base class for Generated file
+8. Specify base class for Generated files if needed
 
-9. Cleaner way of doing steps above - create a new  ttinclude file and specify settings there and use those in tt file - Models.ttinclude
+9. Cleaner way of doing the two steps above - create a new Models.ttinclude file with above settings and reference it in Models.tt file - 
 
-10. Corresponding changes to DataStore.Context.tt in Repository project using a new ttinclude file => dbcontext.ttinclude
+10. Likewise customize DataStore.Context.tt in Repository project using a new ttinclude file => dbcontext.ttinclude
 
 11. Note the change in "public string DbSet(EntitySet entitySet)" in DataStore.Context.tt to add namespace and a third parameter
     here -> "{0} virtual DbSet<{1}.{2}> {3} {{ get; set; }}",
