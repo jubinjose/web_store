@@ -1,9 +1,12 @@
-﻿using System;
+﻿using Store.Model;
+using Store.WebApi.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Results;
 
 namespace Store.WebApi.Controllers
 {
@@ -11,31 +14,53 @@ namespace Store.WebApi.Controllers
 
     public class AccountController : ApiController
     {
-        // GET: api/Account
-        public IEnumerable<string> Get()
+        //[Route("get")]
+        //public HttpResponseMessage Get()
+        //{
+        //    var result = new string[] { "value1", "value2" };
+        //    return Request.CreateResponse(HttpStatusCode.OK, result);
+        //}
+
+        List<Person> personList = new List<Person>
         {
-            return new string[] { "value1", "value2" };
+                new Person {ID = 1, FirstName = "jubin", LastName = "jose" , Email = "jubin.jose@gmail.com"},
+                new Person { ID = 2,FirstName = "charmaine", LastName = "korah" , Email = "charmainerk@gmail.com" },
+                new Person { ID = 3,FirstName = "alayna", LastName = "joseph" , Email = "alaynajoseph@gmail.com" }
+        };
+
+        [HttpGet]
+        public IHttpActionResult Get(int id)
+        {
+            var person = personList.FirstOrDefault((p) => p.ID == id);
+            if (person == null)
+            {
+                return NotFound();
+            }
+            return Ok(person);
         }
 
-        // GET: api/Account/5
-        public string Get(int id)
+        [HttpPost]
+        public IHttpActionResult CreateAccount([FromBody] AccountCreateDto dto)
         {
-            return "value";
+            return Ok(dto);
         }
 
-        // POST: api/Account
-        public void Post([FromBody]string value)
-        {
-        }
 
-        // PUT: api/Account/5
         public void Put(int id, [FromBody]string value)
         {
+
         }
 
-        // DELETE: api/Account/5
-        public void Delete(int id)
+        [HttpDelete]
+        public IHttpActionResult Delete(int id)
         {
+            var person = personList.FirstOrDefault((p) => p.ID == id);
+            if (person == null)
+            {
+                return NotFound();
+            }
+            personList.Remove(person);
+            return Ok(person);
         }
     }
 }
