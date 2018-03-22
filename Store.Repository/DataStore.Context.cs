@@ -30,6 +30,6 @@ namespace Store.Repository
         }
     
         public virtual DbSet<Store.Model.Account> Accounts { get; set; }
-        public virtual DbSet<Store.Model.Person> People { get; set; }
+        public virtual DbSet<Store.Model.Profile> Profiles { get; set; }
     }
 }

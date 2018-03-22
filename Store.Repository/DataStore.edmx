@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Store.Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Store.Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Account">
           <Key>
             <PropertyRef Name="ID" />
@@ -16,90 +16,89 @@
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="ModifiedDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="128" Nullable="false" />
         </EntityType>
-        <EntityType Name="Person">
+        <EntityType Name="Profile">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="FirstName" Type="varchar" MaxLength="20" />
           <Property Name="LastName" Type="varchar" MaxLength="20" />
-          <Property Name="Email" Type="varchar" MaxLength="128" />
           <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="ModifiedDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="Account_ID" Type="int" Nullable="false" />
         </EntityType>
-        <Association Name="FK_Person_Account">
+        <Association Name="FK_Profile_Account">
           <End Role="Account" Type="Self.Account" Multiplicity="1" />
-          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <End Role="Profile" Type="Self.Profile" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Account">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Person">
+            <Dependent Role="Profile">
               <PropertyRef Name="Account_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="StoreModelStoreContainer">
           <EntitySet Name="Account" EntityType="Self.Account" Schema="Store" store:Type="Tables" />
-          <EntitySet Name="Person" EntityType="Self.Person" Schema="Store" store:Type="Tables" />
-          <AssociationSet Name="FK_Person_Account" Association="Self.FK_Person_Account">
+          <EntitySet Name="Profile" EntityType="Self.Profile" Schema="Store" store:Type="Tables" />
+          <AssociationSet Name="FK_Profile_Account" Association="Self.FK_Profile_Account">
             <End Role="Account" EntitySet="Account" />
-            <End Role="Person" EntitySet="Person" />
+            <End Role="Profile" EntitySet="Profile" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Store.Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="DataStoreConnection" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Accounts" EntityType="Store.Model.Account" />
+          <EntitySet Name="Profiles" EntityType="Store.Model.Profile" />
+          <AssociationSet Name="FK_Profile_Account" Association="Store.Model.FK_Profile_Account">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="Profile" EntitySet="Profiles" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="Account">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="PasswordHash" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="PasswordSalt" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PasswordHash" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PasswordSalt" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" />
-          <NavigationProperty Name="People" Relationship="Self.FK_Person_Account" FromRole="Account" ToRole="Person" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Profiles" Relationship="Store.Model.FK_Profile_Account" FromRole="Account" ToRole="Profile" />
         </EntityType>
-        <EntityType Name="Person">
+        <EntityType Name="Profile">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="FirstName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="LastName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Email" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="Account_ID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Account" Relationship="Self.FK_Person_Account" FromRole="Person" ToRole="Account" />
+          <NavigationProperty Name="Account" Relationship="Store.Model.FK_Profile_Account" FromRole="Profile" ToRole="Account" />
         </EntityType>
-        <Association Name="FK_Person_Account">
-          <End Role="Account" Type="Self.Account" Multiplicity="1" />
-          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+        <Association Name="FK_Profile_Account">
+          <End Type="Store.Model.Account" Role="Account" Multiplicity="1" />
+          <End Type="Store.Model.Profile" Role="Profile" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Account">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Person">
+            <Dependent Role="Profile">
               <PropertyRef Name="Account_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="DataStoreConnection" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Accounts" EntityType="Self.Account" />
-          <EntitySet Name="People" EntityType="Self.Person" />
-          <AssociationSet Name="FK_Person_Account" Association="Self.FK_Person_Account">
-            <End Role="Account" EntitySet="Accounts" />
-            <End Role="Person" EntitySet="People" />
-          </AssociationSet>
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -109,26 +108,26 @@
           <EntitySetMapping Name="Accounts">
             <EntityTypeMapping TypeName="Store.Model.Account">
               <MappingFragment StoreEntitySet="Account">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
-                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="People">
-            <EntityTypeMapping TypeName="Store.Model.Person">
-              <MappingFragment StoreEntitySet="Person">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <EntitySetMapping Name="Profiles">
+            <EntityTypeMapping TypeName="Store.Model.Profile">
+              <MappingFragment StoreEntitySet="Profile">
                 <ScalarProperty Name="Account_ID" ColumnName="Account_ID" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

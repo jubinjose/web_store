@@ -18,7 +18,7 @@ namespace Store.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Account()
         {
-            this.People = new HashSet<Person>();
+            this.Profiles = new HashSet<Profile>();
         }
     
         public int ID { get; set; }
@@ -28,8 +28,9 @@ namespace Store.Model
         public bool IsActive { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public System.DateTime ModifiedDate { get; set; }
+        public string Email { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Person> People { get; set; }
+        public virtual ICollection<Profile> Profiles { get; set; }
     }
 }

@@ -49,7 +49,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
-    <Compile Include="Person.generated.cs">
+    <Compile Include="OpResult.cs" />
+    <Compile Include="Profile.generated.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

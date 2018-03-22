@@ -1,4 +1,5 @@
-﻿using Store.Model;
+﻿using Store.BLL.Service;
+using Store.Model;
 using Store.WebApi.DTO;
 using System;
 using System.Collections.Generic;
@@ -14,18 +15,11 @@ namespace Store.WebApi.Controllers
 
     public class AccountController : ApiController
     {
-        //[Route("get")]
-        //public HttpResponseMessage Get()
-        //{
-        //    var result = new string[] { "value1", "value2" };
-        //    return Request.CreateResponse(HttpStatusCode.OK, result);
-        //}
-
-        List<Person> personList = new List<Person>
+        List<Profile> personList = new List<Profile>
         {
-                new Person {ID = 1, FirstName = "jubin", LastName = "jose" , Email = "jubin.jose@gmail.com"},
-                new Person { ID = 2,FirstName = "charmaine", LastName = "korah" , Email = "charmainerk@gmail.com" },
-                new Person { ID = 3,FirstName = "alayna", LastName = "joseph" , Email = "alaynajoseph@gmail.com" }
+                new Profile {ID = 1, FirstName = "jubin", LastName = "jose" },
+                new Profile { ID = 2,FirstName = "charmaine", LastName = "korah"  },
+                new Profile { ID = 3,FirstName = "alayna", LastName = "joseph"  }
         };
 
         [HttpGet]
@@ -40,13 +34,44 @@ namespace Store.WebApi.Controllers
         }
 
         [HttpPost]
+        [Route("create")]
         public IHttpActionResult CreateAccount([FromBody] AccountCreateDto dto)
         {
-            return Ok(dto);
+            var salt = Jubin.Utility.EncryptionUtility.GenerateRandomSaltString();
+            var hashedPass = Jubin.Utility.EncryptionUtility.GeneratePBKDF2Hash(dto.Password, salt);
+            Account acc = new Account
+            {
+                UserName = dto.UserName,
+                PasswordHash = hashedPass,
+                PasswordSalt = salt,
+                Email = dto.Email
+            };
+            AccountService service = new AccountService();
+            var result = service.CreateAccount(acc);
+            if (result.exception == null)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return Ok(OpResult.FailureResult("Account Creation Failed"));
+            }
+        }
+
+        [HttpPost]
+        public IHttpActionResult ResetPassword([FromBody] string userName)
+        {
+            return Ok(true);
+        }
+
+        [HttpPost]
+        public IHttpActionResult ForgotUserName([FromBody] string eMail)
+        {
+            return Ok(true);
         }
 
 
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody] string value)
         {
 
         }

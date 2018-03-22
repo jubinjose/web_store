@@ -12,13 +12,12 @@ namespace Store.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Person:
+    public partial class Profile:
     Store.Model.ModelBase
     {
         public int ID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Email { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public System.DateTime ModifiedDate { get; set; }
         public int Account_ID { get; set; }
