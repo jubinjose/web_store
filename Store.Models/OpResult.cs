@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Store.Model
 {
@@ -11,14 +8,18 @@ namespace Store.Model
         public bool Success;
         public List<string> Errors = new List<string>();
         public List<string> Warnings = new List<string>();
-        public Exception exception;
+        public Exception Exception;
+
+        public static OpResult SuccessResult()
+        {
+            return new OpResult { Success = true};
+        }
 
         public static OpResult FailureResult(List<string> errors)
         {
             return new OpResult
             {
-                Success = false,
-                Errors = errors
+                Success = false, Errors = errors
             };
         }
 
@@ -31,8 +32,7 @@ namespace Store.Model
         {
             return new OpResult
             {
-                Success = false,
-                exception = e
+                Success = false, Exception = e
             };
         }
 
@@ -45,8 +45,7 @@ namespace Store.Model
         {
             return new OpResult<T>
             {
-                Success = true,
-                Result = obj
+                Success = true, Result = obj
             };
         }
 

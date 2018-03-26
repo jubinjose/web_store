@@ -43,6 +43,8 @@
     <Compile Include="Account.generated.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
+    <Compile Include="DTO\AccountCreateDto.cs" />
+    <Compile Include="DTO\AccountDTO.cs" />
     <Compile Include="ModelBase.cs" />
     <Compile Include="Models.generated.cs">
       <AutoGen>True</AutoGen>
@@ -67,6 +69,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Models.generated.cs</LastGenOutput>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Validation\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,62 +1,58 @@
-﻿using Store.BLL.Service;
+﻿using Store.BLL.Interface;
+using Store.BLL.Service;
 using Store.Model;
-using Store.WebApi.DTO;
+using Store.Model.DTO;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
-using System.Web.Http.Results;
 
 namespace Store.WebApi.Controllers
 {
     [RoutePrefix("api/account")]
 
-    public class AccountController : ApiController
+    public class AccountController : ApiControllerBase
     {
-        List<Profile> personList = new List<Profile>
-        {
-                new Profile {ID = 1, FirstName = "jubin", LastName = "jose" },
-                new Profile { ID = 2,FirstName = "charmaine", LastName = "korah"  },
-                new Profile { ID = 3,FirstName = "alayna", LastName = "joseph"  }
-        };
-
-        [HttpGet]
-        public IHttpActionResult Get(int id)
-        {
-            var person = personList.FirstOrDefault((p) => p.ID == id);
-            if (person == null)
-            {
-                return NotFound();
-            }
-            return Ok(person);
-        }
+        IAccountService _service = new AccountService();
 
         [HttpPost]
         [Route("create")]
         public IHttpActionResult CreateAccount([FromBody] AccountCreateDto dto)
         {
-            var salt = Jubin.Utility.EncryptionUtility.GenerateRandomSaltString();
-            var hashedPass = Jubin.Utility.EncryptionUtility.GeneratePBKDF2Hash(dto.Password, salt);
-            Account acc = new Account
+            try
             {
-                UserName = dto.UserName,
-                PasswordHash = hashedPass,
-                PasswordSalt = salt,
-                Email = dto.Email
-            };
-            AccountService service = new AccountService();
-            var result = service.CreateAccount(acc);
-            if (result.exception == null)
-            {
+                var result = _service.CreateAccount(dto);
                 return Ok(result);
             }
-            else
+            catch (Exception ex)
             {
                 return Ok(OpResult.FailureResult("Account Creation Failed"));
             }
         }
+
+        [HttpGet]
+        public IHttpActionResult GetAccount(int id)
+        {
+            var accountDTO = _service.GetAccount(id);
+
+            if (accountDTO != null) return Ok(OpResult<AccountDTO>.SuccessResult(accountDTO));
+
+            return NotFound("Account Not Found");
+        }
+
+        [HttpDelete]
+        public IHttpActionResult DeleteAccount(int id)
+        {
+            var result = _service.DeleteAccount(id);
+
+            if (result)
+            {
+                return Ok(OpResult.SuccessResult());
+            }
+
+            return NotFound("Account Not Found");
+
+        }
+
+
 
         [HttpPost]
         public IHttpActionResult ResetPassword([FromBody] string userName)
@@ -76,16 +72,6 @@ namespace Store.WebApi.Controllers
 
         }
 
-        [HttpDelete]
-        public IHttpActionResult Delete(int id)
-        {
-            var person = personList.FirstOrDefault((p) => p.ID == id);
-            if (person == null)
-            {
-                return NotFound();
-            }
-            personList.Remove(person);
-            return Ok(person);
-        }
+        
     }
 }
