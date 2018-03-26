@@ -11,10 +11,18 @@ namespace Store.BLL.Service
     {
         private RepositoryPlaceholder _repo = new RepositoryPlaceholder();
 
-        public OpResult CreateAccount(AccountCreateDto dto)
+        public OpResult CreateAccount(AccountCreateRequest dto)
         {
-            AccountCreateValidator validator = new AccountCreateValidator();
-            var validationResult = validator.Validate(dto);
+
+            Account account = new Account
+            {
+                UserName = dto.UserName,
+                Password = dto.Password,
+                Email = dto.Email
+            };
+
+            AccountValidator validator = new AccountValidator();
+            var validationResult = validator.Validate(account);
 
             if (!validationResult.IsValid)
             {
@@ -24,32 +32,66 @@ namespace Store.BLL.Service
             var salt = Jubin.Utility.EncryptionUtility.GenerateRandomSaltString();
             var hashedPass = Jubin.Utility.EncryptionUtility.GeneratePBKDF2Hash(dto.Password, salt);
 
-            Account account = new Account
-            {
-                UserName = dto.UserName,
-                PasswordHash = hashedPass,
-                PasswordSalt = salt,
-                Email = dto.Email
-            };
+            account.PasswordHash = hashedPass;
+            account.PasswordSalt = salt;
 
-            _repo.CreateAccount(account);
+            _repo.SaveAccount(account);
 
             return OpResult.SuccessResult();
         }
 
-        public AccountDTO GetAccount(int id)
+        public AccountResponse GetAccount(int id)
         {
             var account = _repo.GetAccount(id);
             if (account == null) return null;
 
             Profile profile = account.Profiles.Any() ? account.Profiles.Single() : null;
 
-            return new AccountDTO
+            return new AccountResponse
             {
                 Email = account.Email,
                 FirstName = profile?.FirstName,
                 LastName = profile?.LastName
             };
+        }
+
+        public OpResult UpdateAccount(AccountUpdateRequest dto)
+        {
+            var account = _repo.GetAccount(dto.Id);
+            if (account == null) return OpResult.FailureResult("Account not found");
+
+            account.Email = dto.Email;
+
+
+            var profile = account.GetProfile();
+
+            if (profile == null)
+            {
+                if (!(string.IsNullOrEmpty(dto.FirstName) && string.IsNullOrWhiteSpace(dto.LastName)))
+                {
+                    profile = new Profile();
+                    account.Profiles.Add(profile);
+                }
+            }
+            if (profile != null)
+            {
+                profile.FirstName = dto.FirstName;
+                profile.LastName = dto.LastName;
+            }
+
+            account.Password = "dummy"; // To pass validation
+
+            AccountValidator validator = new AccountValidator();
+            var validationResult = validator.Validate(account);
+
+            if (!validationResult.IsValid)
+            {
+                return OpResult.FailureResult(validationResult.Errors.Select(e => e.ErrorMessage).ToList());
+            }
+
+            _repo.SaveAccount(account);
+
+            return OpResult.SuccessResult();
         }
 
         public bool DeleteAccount(int id)

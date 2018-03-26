@@ -150,6 +150,10 @@
       <Project>{83928896-431b-417e-8b44-c6a28b24bb4e}</Project>
       <Name>Store.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Store.Web.Core\Store.Web.Core.csproj">
+      <Project>{d2b6a582-2a5f-46b8-8d17-f3d496decc07}</Project>
+      <Name>Store.Web.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

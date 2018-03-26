@@ -5,9 +5,11 @@ namespace Store.BLL.Interface
 {
     public interface IAccountService
     {
-        OpResult CreateAccount(AccountCreateDto dto);
+        OpResult CreateAccount(AccountCreateRequest dto);
 
-        AccountDTO GetAccount(int id);
+        AccountResponse GetAccount(int id);
+
+        OpResult UpdateAccount(AccountUpdateRequest dto);
 
         bool DeleteAccount(int id);
     }

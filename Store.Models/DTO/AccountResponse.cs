@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Store.Model.DTO
 {
-    public class AccountDTO
+    public class AccountResponse
     {
         public string Email { get; set; }
 

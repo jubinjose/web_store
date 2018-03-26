@@ -14,8 +14,7 @@ namespace Store.WebApi.Controllers
         IAccountService _service = new AccountService();
 
         [HttpPost]
-        [Route("create")]
-        public IHttpActionResult CreateAccount([FromBody] AccountCreateDto dto)
+        public IHttpActionResult CreateAccount([FromBody] AccountCreateRequest dto)
         {
             try
             {
@@ -33,9 +32,23 @@ namespace Store.WebApi.Controllers
         {
             var accountDTO = _service.GetAccount(id);
 
-            if (accountDTO != null) return Ok(OpResult<AccountDTO>.SuccessResult(accountDTO));
+            if (accountDTO != null) return Ok(OpResult<AccountResponse>.SuccessResult(accountDTO));
 
             return NotFound("Account Not Found");
+        }
+
+        [HttpPut]
+        public IHttpActionResult UpdateAccount(AccountUpdateRequest dto)
+        {
+            try
+            {
+                var result = _service.UpdateAccount(dto);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return Ok(OpResult.FailureResult("Account Creation Failed"));
+            }
         }
 
         [HttpDelete]
@@ -52,25 +65,14 @@ namespace Store.WebApi.Controllers
 
         }
 
+        //[Route("/api/login")]
+        //public IHttpActionResult Login([FromBody] LoginRequest request)
+        //{
+
+        //}
 
 
-        [HttpPost]
-        public IHttpActionResult ResetPassword([FromBody] string userName)
-        {
-            return Ok(true);
-        }
 
-        [HttpPost]
-        public IHttpActionResult ForgotUserName([FromBody] string eMail)
-        {
-            return Ok(true);
-        }
-
-
-        public void Put(int id, [FromBody] string value)
-        {
-
-        }
 
         
     }

@@ -40,11 +40,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Account.cs" />
     <Compile Include="Account.generated.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
-    <Compile Include="DTO\AccountCreateDto.cs" />
-    <Compile Include="DTO\AccountDTO.cs" />
+    <Compile Include="DTO\AccountUpdateRequest.cs" />
+    <Compile Include="DTO\AccountCreateRequest.cs" />
+    <Compile Include="DTO\AccountResponse.cs" />
+    <Compile Include="DTO\LoginRequest.cs" />
     <Compile Include="ModelBase.cs" />
     <Compile Include="Models.generated.cs">
       <AutoGen>True</AutoGen>

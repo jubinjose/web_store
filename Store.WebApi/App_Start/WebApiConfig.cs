@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Store.Web.Core;
 using System.Web.Http;
+
+
 
 namespace Store.WebApi
 {
@@ -13,6 +13,8 @@ namespace Store.WebApi
 
             // Web API routes
             config.MapHttpAttributeRoutes();
+
+            config.MessageHandlers.Add(new TokenValidationHandler());
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

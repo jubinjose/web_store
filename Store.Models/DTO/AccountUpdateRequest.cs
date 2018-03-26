@@ -5,11 +5,13 @@ using System.Web;
 
 namespace Store.Model.DTO
 {
-    public class AccountCreateDto
+    public class AccountUpdateRequest
     {
-        public string UserName { get; set; }
+        public int Id { get; set; }
 
-        public string Password { get; set; }
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
 
         public string Email { get; set; }
 

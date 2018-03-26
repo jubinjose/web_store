@@ -6,11 +6,11 @@ namespace Store.Repository
 {
     public class RepositoryPlaceholder
     {
-        public int CreateAccount(Account account)
+        public int SaveAccount(Account account)
         {
             using (var context = new DataStoreConnection())
             {
-                context.Accounts.Add(account);
+                if (account.ID == 0) context.Accounts.Add(account); //To handle Create and Update
                 context.SaveChanges();
                 return account.ID;
             }

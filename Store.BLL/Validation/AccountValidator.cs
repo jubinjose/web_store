@@ -1,11 +1,10 @@
 ﻿using FluentValidation;
-using Store.Model.DTO;
-
+using Store.Model;
 namespace Store.BLL.Validation
 {
-    public class AccountCreateValidator: AbstractValidator<AccountCreateDto>
+    public class AccountValidator : BaseValidator<Account>
     {
-        public AccountCreateValidator()
+        public AccountValidator()
         {
             RuleFor(r => r.UserName).NotEmpty().WithMessage("UserName is required")
                             .Length(3, 128).WithMessage("UserName must be between 3 to 128 in length");
