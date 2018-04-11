@@ -9,14 +9,15 @@ namespace Store.BLL.Service
 {
     public class AccountService : IAccountService
     {
-        private RepositoryPlaceholder _repo = new RepositoryPlaceholder();
+        private IRepository _repo = RepositoryPlaceholder.CreateRepository();
+        //private RepositoryPlaceholder _repo = new RepositoryPlaceholder();
 
         public OpResult CreateAccount(AccountCreateRequest dto)
         {
 
             Account account = new Account
             {
-                UserName = dto.UserName,
+                UserName = dto.Username,
                 Password = dto.Password,
                 Email = dto.Email
             };
@@ -29,20 +30,30 @@ namespace Store.BLL.Service
                 return OpResult.FailureResult(validationResult.Errors.Select(e => e.ErrorMessage).ToList());
             }
 
+            var existingAccount = _repo.GetFirst<Account>(a => a.UserName == dto.Username || a.Email == dto.Email);
+            if (existingAccount != null)
+            {
+                if (existingAccount.UserName == dto.Username)
+                    return OpResult.FailureResult("username already exists");
+                if (existingAccount.Email == dto.Email)
+                    return OpResult.FailureResult("eMail already exists");
+            }
+
             var salt = Jubin.Utility.EncryptionUtility.GenerateRandomSaltString();
             var hashedPass = Jubin.Utility.EncryptionUtility.GeneratePBKDF2Hash(dto.Password, salt);
 
             account.PasswordHash = hashedPass;
             account.PasswordSalt = salt;
 
-            _repo.SaveAccount(account);
+            _repo.Create<Account>(account);
+            _repo.Save();
 
             return OpResult.SuccessResult();
         }
 
         public AccountResponse GetAccount(int id)
         {
-            var account = _repo.GetAccount(id);
+            var account = _repo.GetFirst<Account>(a => a.ID == id, null, "Profiles");
             if (account == null) return null;
 
             Profile profile = account.Profiles.Any() ? account.Profiles.Single() : null;
@@ -57,11 +68,8 @@ namespace Store.BLL.Service
 
         public OpResult UpdateAccount(AccountUpdateRequest dto)
         {
-            var account = _repo.GetAccount(dto.Id);
+            var account = _repo.GetFirst<Account>(a => a.ID == dto.Id, null, "Profiles");
             if (account == null) return OpResult.FailureResult("Account not found");
-
-            account.Email = dto.Email;
-
 
             var profile = account.GetProfile();
 
@@ -79,7 +87,14 @@ namespace Store.BLL.Service
                 profile.LastName = dto.LastName;
             }
 
-            account.Password = "dummy"; // To pass validation
+            if (account.Email != dto.Email)
+            {
+                var anotherAccount = _repo.GetFirst<Account>(a => a.ID != dto.Id && a.Email == dto.Email, null, "Profiles");
+                if (anotherAccount!=null)
+                    return OpResult.FailureResult("eMail already exists");
+
+                account.Email = dto.Email;
+            }
 
             AccountValidator validator = new AccountValidator();
             var validationResult = validator.Validate(account);
@@ -89,14 +104,16 @@ namespace Store.BLL.Service
                 return OpResult.FailureResult(validationResult.Errors.Select(e => e.ErrorMessage).ToList());
             }
 
-            _repo.SaveAccount(account);
+            _repo.Update<Account>(account);
+            _repo.Save();
 
             return OpResult.SuccessResult();
         }
 
-        public bool DeleteAccount(int id)
+        public void DeleteAccount(int id)
         {
-            return _repo.DeleteAccount(id);
+            _repo.Delete<Account>(id);
+            _repo.Save();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
@@ -43,7 +44,7 @@ namespace Store.Web.Core
 
             try
             {
-                const string sec = "401b09eab3c013d4ca54922bb802bec8fd5318192b0a75f201d8b3727429090fb337591abd3e44453b954555b7a0812e1081c39b740293f765eae731f5a65ed1";
+                string sec = ConfigurationManager.AppSettings["jwtkey"];
                 var now = DateTime.UtcNow;
                 var securityKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.Default.GetBytes(sec));
 
@@ -52,8 +53,8 @@ namespace Store.Web.Core
                 JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
                 TokenValidationParameters validationParameters = new TokenValidationParameters()
                 {
-                    ValidAudience = "http://localhost:50191",
-                    ValidIssuer = "http://localhost:50191",
+                    ValidAudience = "http://localhost:80",
+                    ValidIssuer = "http://localhost:80",
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
                     LifetimeValidator = this.LifetimeValidator,

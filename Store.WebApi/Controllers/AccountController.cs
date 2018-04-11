@@ -54,26 +54,8 @@ namespace Store.WebApi.Controllers
         [HttpDelete]
         public IHttpActionResult DeleteAccount(int id)
         {
-            var result = _service.DeleteAccount(id);
-
-            if (result)
-            {
-                return Ok(OpResult.SuccessResult());
-            }
-
-            return NotFound("Account Not Found");
-
+            _service.DeleteAccount(id);
+            return Ok(OpResult.SuccessResult());
         }
-
-        //[Route("/api/login")]
-        //public IHttpActionResult Login([FromBody] LoginRequest request)
-        //{
-
-        //}
-
-
-
-
-        
     }
 }

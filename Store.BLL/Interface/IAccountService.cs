@@ -11,6 +11,6 @@ namespace Store.BLL.Interface
 
         OpResult UpdateAccount(AccountUpdateRequest dto);
 
-        bool DeleteAccount(int id);
+        void DeleteAccount(int id);
     }
 }

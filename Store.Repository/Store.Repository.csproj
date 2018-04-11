@@ -49,6 +49,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EFReadOnlyRepository.cs" />
+    <Compile Include="EFRepository.cs" />
+    <Compile Include="IReadOnlyRepository.cs" />
+    <Compile Include="IRepository.cs" />
     <Compile Include="MissingDLLHack.cs" />
     <Compile Include="RepositoryPlaceholder.cs" />
     <Compile Include="DataStore.Context.cs">
