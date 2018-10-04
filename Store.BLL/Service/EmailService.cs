@@ -1,6 +1,7 @@
 ﻿using Store.BLL.Interface;
 using Store.Model;
 using System;
+using System.IO;
 using System.Net;
 using System.Net.Mail;
 
@@ -35,8 +36,10 @@ namespace Store.BLL.Service
             SmtpClient client =
                 new SmtpClient(HOST, PORT);
             // Pass SMTP credentials
+            var awsCredsFromFile = File.ReadAllText(@"D:\Jubin\Other\Dev\Git\mainrepo\DotNet\Store\aws_creds.txt");
+            var split = awsCredsFromFile.Split(',');
             client.Credentials =
-                new NetworkCredential("AKIAJVKA4HNQ2ME62MLA", "AlWs8MxAIZPlQFQww7DEBVLDlK9tyiFO1cIhFCzTSJWT");
+                new NetworkCredential(split[0], split[1]);
             // Enable SSL encryption
             client.EnableSsl = true;
 
