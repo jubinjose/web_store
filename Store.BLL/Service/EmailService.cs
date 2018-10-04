@@ -36,7 +36,7 @@ namespace Store.BLL.Service
             SmtpClient client =
                 new SmtpClient(HOST, PORT);
             // Pass SMTP credentials
-            var awsCredsFromFile = File.ReadAllText(@"D:\Jubin\Other\Dev\Git\mainrepo\DotNet\Store\aws_creds.txt");
+            var awsCredsFromFile = File.ReadAllText(@"D:\jubin\creds\aws_creds.txt");
             var split = awsCredsFromFile.Split(',');
             client.Credentials =
                 new NetworkCredential(split[0], split[1]);
