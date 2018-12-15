@@ -88,6 +88,7 @@
       <DependentUpon>DataStore.edmx</DependentUpon>
       <LastGenOutput>DataStore.Context.cs</LastGenOutput>
     </Content>
+    <Content Include="DB Scripts\create_table.sql" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Store.Models\Store.Model.csproj">
@@ -95,5 +96,6 @@
       <Name>Store.Model</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

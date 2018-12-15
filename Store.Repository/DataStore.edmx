@@ -17,6 +17,8 @@
           <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="ModifiedDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="Email" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="FailedLoginAttempts" Type="smallint" Nullable="false" />
+          <Property Name="EmailVerificationCode" Type="char" MaxLength="32" />
         </EntityType>
         <EntityType Name="Profile">
           <Key>
@@ -74,6 +76,8 @@
           <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="Email" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Profiles" Relationship="Store.Model.FK_Profile_Account" FromRole="Account" ToRole="Profile" />
+          <Property Name="FailedLoginAttempts" Type="Int16" Nullable="false" />
+          <Property Name="EmailVerificationCode" Type="String" MaxLength="32" FixedLength="true" Unicode="false" />
         </EntityType>
         <EntityType Name="Profile">
           <Key>
@@ -108,6 +112,8 @@
           <EntitySetMapping Name="Accounts">
             <EntityTypeMapping TypeName="Store.Model.Account">
               <MappingFragment StoreEntitySet="Account">
+                <ScalarProperty Name="EmailVerificationCode" ColumnName="EmailVerificationCode" />
+                <ScalarProperty Name="FailedLoginAttempts" ColumnName="FailedLoginAttempts" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />

@@ -42,8 +42,28 @@ namespace Store.WebApi.Controllers
         }
 
 
+        private string CreateFullyAuthorizedToken(string userName)
+        {
+            return CreateToken(
+                new ClaimsIdentity(new[]
+                {
+                    new Claim(ClaimTypes.Name, userName)
+                })
+            );
+        }
 
-        private string CreateToken(string userName)
+        private string CreateEmailVerificationRequiredToken(string userName)
+        {
+            return CreateToken(
+                new ClaimsIdentity(new[]
+                {
+                    new Claim(ClaimTypes.Name, userName),
+                    new Claim("EmailActivationRequired", "true")
+                })
+            );
+        }
+
+        private string CreateToken(ClaimsIdentity claimsIdentity)
         {
             //Set issued at date
             DateTime issuedAt = DateTime.UtcNow;

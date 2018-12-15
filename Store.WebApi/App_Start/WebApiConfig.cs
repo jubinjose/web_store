@@ -1,7 +1,6 @@
 ﻿using Store.Web.Core;
 using System.Web.Http;
-
-
+using System.Web.Http.Filters;
 
 namespace Store.WebApi
 {

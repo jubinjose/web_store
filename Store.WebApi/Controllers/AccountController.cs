@@ -6,6 +6,7 @@ using System;
 using System.Security.Claims;
 using System.Threading;
 using System.Web.Http;
+using System.Web.Http.Results;
 
 namespace Store.WebApi.Controllers
 {
@@ -15,20 +16,6 @@ namespace Store.WebApi.Controllers
     {
         IAccountService _service = new AccountService();
 
-        [HttpPost]
-        public IHttpActionResult CreateAccount([FromBody] AccountCreateRequest dto)
-        {
-            try
-            {
-                var result = _service.CreateAccount(dto);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return Ok(OpResult.FailureResult("Account Creation Failed"));
-            }
-        }
-
         [HttpGet]
         [Authorize]
         public IHttpActionResult GetAccount()
@@ -36,10 +23,33 @@ namespace Store.WebApi.Controllers
             var username = GetUser();
             var accountResponse = _service.GetAccount(username);
 
-            if (accountResponse != null) return Ok(OpResult<AccountResponse>.SuccessResult(accountResponse));
-
-            return NotFound("Account Not Found");
+            return accountResponse != null ? Json(ApiResult.Success(accountResponse)) : Json(ApiResult.Failure("Account Not Found"));
         }
+
+        [HttpGet]
+        [Route("{id:int}")]
+        public IHttpActionResult GetAccountById(int id)
+        {
+            var accountResponse = _service.GetAccount(id);
+
+            return accountResponse != null ? Json(ApiResult.Success(accountResponse)) : Json(ApiResult.Failure("Account Not Found"));
+        }
+
+        [HttpPost]
+        public IHttpActionResult CreateAccount([FromBody] AccountCreateRequest dto)
+        {
+            try
+            {
+                var result = _service.CreateAccount(dto);
+                return Json(ApiResult.Success());
+            }
+            catch (Exception ex)
+            {
+                return Json(ApiResult.Failure("Account creation Failed"));
+            }
+        }
+
+
 
         [HttpPut]
         public IHttpActionResult UpdateAccount(AccountUpdateRequest dto)
@@ -48,11 +58,11 @@ namespace Store.WebApi.Controllers
             try
             {
                 var result = _service.UpdateAccount(username, dto);
-                return Ok(result);
+                return Json(ApiResult.Success());
             }
             catch (Exception ex)
             {
-                return Ok(OpResult.FailureResult("Account Creation Failed"));
+                return Json(ApiResult.Failure("Account update Failed"));
             }
         }
 
@@ -61,9 +71,7 @@ namespace Store.WebApi.Controllers
         {
             var accountResponse = _service.GetAccount(id);
 
-            if (accountResponse != null) return Ok(OpResult<AccountResponse>.SuccessResult(accountResponse));
-
-            return NotFound("Account Not Found");
+            return accountResponse != null ? Json(ApiResult.Success(accountResponse)) : Json(ApiResult.Failure("Account Not Found"));
         }
 
         //[HttpPut]
@@ -85,7 +93,7 @@ namespace Store.WebApi.Controllers
         public IHttpActionResult DeleteAccount(int id)
         {
             _service.DeleteAccount(id);
-            return Ok(OpResult.SuccessResult());
+            return Json(ApiResult.Success());
         }
 
         private string GetUser()

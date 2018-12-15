@@ -29,6 +29,8 @@ namespace Store.Model
         public System.DateTime CreatedDate { get; set; }
         public System.DateTime ModifiedDate { get; set; }
         public string Email { get; set; }
+        public short FailedLoginAttempts { get; set; }
+        public string EmailVerificationCode { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Profile> Profiles { get; set; }

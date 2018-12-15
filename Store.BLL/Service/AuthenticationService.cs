@@ -32,7 +32,7 @@ namespace Store.BLL.Service
             if (account.PasswordHash != hashedPass)
                 return OpResult.FailureResult("Invalid password");
 
-            return OpResult.SuccessResult();
+            return OpResult<Account>.SuccessResult(account);
         }
     }
 }

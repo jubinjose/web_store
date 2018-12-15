@@ -6,14 +6,13 @@ namespace Store.Model
     public class OpResult
     {
         public bool Success;
-        public string Message;
         public List<string> Errors = new List<string>();
         public List<string> Warnings = new List<string>();
         public Exception Exception;
 
-        public static OpResult SuccessResult(string message = null)
+        public static OpResult SuccessResult()
         {
-            return new OpResult { Success = true, Message = message};
+            return new OpResult { Success = true};
         }
 
         public static OpResult FailureResult(List<string> errors)
