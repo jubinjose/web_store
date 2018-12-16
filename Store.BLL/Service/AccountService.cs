@@ -4,6 +4,7 @@ using Store.Model;
 using Store.Model.DTO;
 using Store.Repository;
 using System.Linq;
+using Jubin.Utils.Encryption;
 
 namespace Store.BLL.Service
 {
@@ -39,8 +40,8 @@ namespace Store.BLL.Service
                     return OpResult.FailureResult("eMail already exists");
             }
 
-            var salt = Jubin.Utility.EncryptionUtility.GenerateRandomSaltString();
-            var hashedPass = Jubin.Utility.EncryptionUtility.GeneratePBKDF2Hash(dto.Password, salt);
+            var salt = EncryptionUtil.GenerateRandomSaltString();
+            var hashedPass = EncryptionUtil.GeneratePBKDF2Hash(dto.Password, salt);
 
             account.PasswordHash = hashedPass;
             account.PasswordSalt = salt;

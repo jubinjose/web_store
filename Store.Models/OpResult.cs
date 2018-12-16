@@ -48,7 +48,5 @@ namespace Store.Model
                 Success = true, Result = obj
             };
         }
-
-        
     }
 }

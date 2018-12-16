@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store.BLL", "Store.BLL\Stor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store.Web.Core", "Store.Web.Core\Store.Web.Core.csproj", "{D2B6A582-2A5F-46B8-8D17-F3D496DECC07}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store.Api", "Store.Api\Store.Api.csproj", "{F51A6CE9-A4EE-4500-AAC8-1D4B7B3C5379}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store.Api.Core", "Store.Api.Core\Store.Api.Core.csproj", "{6BFCB586-6FCF-472D-B37A-1333EB80666B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{D2B6A582-2A5F-46B8-8D17-F3D496DECC07}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2B6A582-2A5F-46B8-8D17-F3D496DECC07}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2B6A582-2A5F-46B8-8D17-F3D496DECC07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F51A6CE9-A4EE-4500-AAC8-1D4B7B3C5379}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F51A6CE9-A4EE-4500-AAC8-1D4B7B3C5379}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F51A6CE9-A4EE-4500-AAC8-1D4B7B3C5379}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F51A6CE9-A4EE-4500-AAC8-1D4B7B3C5379}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BFCB586-6FCF-472D-B37A-1333EB80666B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BFCB586-6FCF-472D-B37A-1333EB80666B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BFCB586-6FCF-472D-B37A-1333EB80666B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BFCB586-6FCF-472D-B37A-1333EB80666B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

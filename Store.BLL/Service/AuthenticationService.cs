@@ -5,6 +5,7 @@ using Store.Model.DTO;
 using Store.Repository;
 using System;
 using System.Linq;
+using Jubin.Utils.Encryption;
 
 namespace Store.BLL.Service
 {
@@ -27,7 +28,7 @@ namespace Store.BLL.Service
                 return OpResult.FailureResult("Account not found");
 
             var salt = account.PasswordSalt;
-            var hashedPass = Jubin.Utility.EncryptionUtility.GeneratePBKDF2Hash(request.Password, salt);
+            var hashedPass = EncryptionUtil.GeneratePBKDF2Hash(request.Password, salt);
 
             if (account.PasswordHash != hashedPass)
                 return OpResult.FailureResult("Invalid password");
