@@ -38,7 +38,14 @@ namespace Store.Api.Controllers
             try
             {
                 var result = _service.CreateAccount(dto);
-                return Json(ApiResult.Success());
+                if (result.Success)
+                {
+                    return Json(ApiResult.Success());
+                }
+                else
+                {
+                    return Json(ApiResult.Failure(result.Errors));
+                }
             }
             catch (Exception ex)
             {

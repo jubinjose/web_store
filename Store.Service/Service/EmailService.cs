@@ -11,6 +11,7 @@ namespace Store.Service
         public OpResult SendEmail(string from, string fromName, string to, string subject, string body)
         {
             const String HOST = "email-smtp.us-west-2.amazonaws.com";
+            ConfigService configService = ConfigService.GetInstance();
 
             // The port you will connect to on the Amazon SES SMTP endpoint. We
             // are choosing port 587 because we will use STARTTLS to encrypt
@@ -21,7 +22,8 @@ namespace Store.Service
             MailMessage message = new MailMessage
             {
                 IsBodyHtml = true,
-                From = new MailAddress(from, fromName)
+                From = new MailAddress(from, fromName),
+                Body = body
             };
             message.To.Add(new MailAddress(to));
             message.Subject = subject;
@@ -35,10 +37,9 @@ namespace Store.Service
             SmtpClient client =
                 new SmtpClient(HOST, PORT);
             // Pass SMTP credentials
-            var awsCredsFromFile = File.ReadAllText(@"D:\jubin\creds\aws_creds.txt");
-            var split = awsCredsFromFile.Split(',');
+
             client.Credentials =
-                new NetworkCredential(split[0], split[1]);
+                new NetworkCredential(configService.GetSmtpUser(), configService.GetSmtpPassword());
             // Enable SSL encryption
             client.EnableSsl = true;
 

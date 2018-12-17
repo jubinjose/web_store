@@ -4,12 +4,15 @@ using Store.Model.DTO;
 using Store.Repository;
 using System.Linq;
 using Jubin.Utils.Encryption;
+using System;
 
 namespace Store.Service
 {
     public class AccountService : IAccountService
     {
         private IRepository _repo = RepositoryPlaceholder.CreateRepository();
+        private IEmailService _emailService = new EmailService();
+        private IConfigService _configService = ConfigService.GetInstance();
         //private RepositoryPlaceholder _repo = new RepositoryPlaceholder();
 
         public OpResult CreateAccount(AccountCreateRequest dto)
@@ -19,7 +22,8 @@ namespace Store.Service
             {
                 UserName = dto.Username,
                 Password = dto.Password,
-                Email = dto.Email
+                Email = dto.Email,
+                EmailVerificationCode = Guid.NewGuid().ToString("N")
             };
 
             AccountValidator validator = new AccountValidator();
@@ -47,6 +51,9 @@ namespace Store.Service
 
             _repo.Create<Account>(account);
             _repo.Save();
+
+            _emailService.SendEmail(_configService.GetFromEmailAddress(), _configService.GetFromEmailName(),
+                account.Email, "Verify Account", "Your verification code is " + account.EmailVerificationCode);
 
             return OpResult.SuccessResult();
         }
