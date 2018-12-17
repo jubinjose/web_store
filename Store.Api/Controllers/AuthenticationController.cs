@@ -1,14 +1,10 @@
-﻿using Store.BLL.Interface;
-using Store.BLL.Service;
-using Store.Model;
+﻿using Store.Model;
 using Store.Model.DTO;
-using System;
-using System.Configuration;
-using System.Security.Claims;
 using System.Web.Http;
 using Store.Api.Models;
 using Store.Api.Core;
 using System.Collections.Generic;
+using Store.Service;
 
 namespace Store.Api.Controllers
 {

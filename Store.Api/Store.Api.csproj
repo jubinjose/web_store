@@ -120,13 +120,13 @@
       <Project>{6bfcb586-6fcf-472d-b37a-1333eb80666b}</Project>
       <Name>Store.Api.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Store.BLL\Store.BLL.csproj">
-      <Project>{7c2d69c7-a914-4231-b03e-7603d9803fff}</Project>
-      <Name>Store.BLL</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Store.Models\Store.Model.csproj">
       <Project>{83928896-431b-417e-8b44-c6a28b24bb4e}</Project>
       <Name>Store.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Store.Service\Store.Service.csproj">
+      <Project>{7C2D69C7-A914-4231-B03E-7603D9803FFF}</Project>
+      <Name>Store.Service</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

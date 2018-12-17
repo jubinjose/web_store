@@ -1,6 +1,5 @@
 ﻿using Store.Api.Models;
-using Store.BLL.Interface;
-using Store.BLL.Service;
+using Store.Service;
 using Store.Model.DTO;
 using System;
 using System.Security.Claims;

@@ -1,7 +1,7 @@
 ﻿using Store.Model;
 using Store.Model.DTO;
 
-namespace Store.BLL.Interface
+namespace Store.Service
 {
     public interface IAuthenticationService
     {

@@ -1,6 +1,6 @@
 ﻿using Store.Model;
 
-namespace Store.BLL.Interface
+namespace Store.Service
 {
     public interface IEmailService
     {

@@ -1,13 +1,11 @@
-﻿using Store.BLL.Interface;
-using Store.BLL.Validation;
+﻿using Store.Service.Validation;
 using Store.Model;
 using Store.Model.DTO;
 using Store.Repository;
-using System;
 using System.Linq;
 using Jubin.Utils.Encryption;
 
-namespace Store.BLL.Service
+namespace Store.Service
 {
     public class AuthenticationService : IAuthenticationService
     {

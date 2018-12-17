@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Store.Model.DTO;
 
-namespace Store.BLL.Validation
+namespace Store.Service.Validation
 {
     public class LoginValidator : BaseValidator<LoginRequest>
     {

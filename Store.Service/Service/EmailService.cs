@@ -1,11 +1,10 @@
-﻿using Store.BLL.Interface;
-using Store.Model;
+﻿using Store.Model;
 using System;
 using System.IO;
 using System.Net;
 using System.Net.Mail;
 
-namespace Store.BLL.Service
+namespace Store.Service
 {
     public class EmailService : IEmailService
     {

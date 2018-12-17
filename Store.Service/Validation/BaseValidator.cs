@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Store.Repository;
 
-namespace Store.BLL.Validation
+namespace Store.Service.Validation
 {
     public class BaseValidator<T>: AbstractValidator<T>
     {

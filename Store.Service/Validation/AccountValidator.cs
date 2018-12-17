@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using Store.Model;
-namespace Store.BLL.Validation
+namespace Store.Service.Validation
 {
     public class AccountValidator : BaseValidator<Account>
     {
