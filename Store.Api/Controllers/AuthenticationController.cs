@@ -18,6 +18,7 @@ namespace Store.Api.Controllers
         public IHttpActionResult LogOn([FromBody] LoginRequest request)
         {
             var result = _service.LogOn(request);
+
             if (result.Success)
             {
                 var account = ((OpResult<Account>)result).Result;
@@ -36,12 +37,13 @@ namespace Store.Api.Controllers
                 return Json(ApiResult.Success(new { jwt = token }));
             }
 
-            return Ok(result);
+            return Json(ApiResult.Failure(result.Errors));
         }
 
         [Route("api/auth/check")]
         [HttpGet]
-        [Authorize]
+        [AuthenticateWithoutEmailVerificationFilter]
+        //[Authorize]
         public IHttpActionResult CheckIfLoggedIn()
         {
             return Ok("Logged in");

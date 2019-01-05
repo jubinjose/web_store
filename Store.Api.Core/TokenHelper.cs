@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,10 +27,55 @@ namespace Store.Api.Core
 
         public static void Init(string jwtKey)
         {
-            if (_instance != null)
+            if (_instance == null)
             {
                 _instance = new TokenHelper() { JwtKey = jwtKey };
             }
+        }
+
+        public static bool TryRetrieveToken(HttpRequestMessage request, out string token)
+        {
+            token = null;
+            IEnumerable<string> authzHeaders;
+            if (!request.Headers.TryGetValues("Authorization", out authzHeaders) || authzHeaders.Count() > 1)
+            {
+                return false;
+            }
+            var bearerToken = authzHeaders.ElementAt(0);
+            token = bearerToken.StartsWith("Bearer ") ? bearerToken.Substring(7) : bearerToken;
+            return true;
+        }
+
+        public static ClaimsPrincipal ValidateToken(string token, out SecurityToken securityToken1)
+        {
+            var now = DateTime.UtcNow;
+            var securityKey = new SymmetricSecurityKey(Encoding.Default.GetBytes(TokenHelper.GetInstance().JwtKey));
+
+
+            JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+            TokenValidationParameters validationParameters = new TokenValidationParameters()
+            {
+                ValidAudience = "http://localhost:80",
+                ValidIssuer = "http://localhost:80",
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                LifetimeValidator = TokenHelper.LifetimeValidator,
+                IssuerSigningKey = securityKey
+            };
+
+            var claimsPrincipal = handler.ValidateToken(token, validationParameters, out SecurityToken securityToken);
+            securityToken1 = securityToken;
+            return claimsPrincipal;
+        }
+
+        public static bool LifetimeValidator(DateTime? notBefore, DateTime? expires, SecurityToken securityToken, 
+            TokenValidationParameters validationParameters)
+        {
+            if (expires != null)
+            {
+                if (DateTime.UtcNow < expires) return true;
+            }
+            return false;
         }
 
         public string CreateToken(Dictionary<string, string> claims)

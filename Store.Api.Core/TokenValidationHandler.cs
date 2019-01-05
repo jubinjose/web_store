@@ -14,25 +14,13 @@ namespace Store.Api.Core
 {
     public class TokenValidationHandler : DelegatingHandler
     {
-        private static bool TryRetrieveToken(HttpRequestMessage request, out string token)
-        {
-            token = null;
-            IEnumerable<string> authzHeaders;
-            if (!request.Headers.TryGetValues("Authorization", out authzHeaders) || authzHeaders.Count() > 1)
-            {
-                return false;
-            }
-            var bearerToken = authzHeaders.ElementAt(0);
-            token = bearerToken.StartsWith("Bearer ") ? bearerToken.Substring(7) : bearerToken;
-            return true;
-        }
+        
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             HttpStatusCode statusCode;
-            string token;
             //determine whether a jwt exists or not
-            if (!TryRetrieveToken(request, out token))
+            if (!TokenHelper.TryRetrieveToken(request, out string token))
             {
                 statusCode = HttpStatusCode.Unauthorized;
                 //allow requests with no token - whether a action method needs an authentication can be set with the claimsauthorization attribute
@@ -41,24 +29,8 @@ namespace Store.Api.Core
 
             try
             {
-                string sec = TokenHelper.GetInstance().JwtKey;
-                var now = DateTime.UtcNow;
-                var securityKey = new SymmetricSecurityKey(System.Text.Encoding.Default.GetBytes(sec));
-
-
-                SecurityToken securityToken;
-                JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
-                TokenValidationParameters validationParameters = new TokenValidationParameters()
-                {
-                    ValidAudience = "http://localhost:80",
-                    ValidIssuer = "http://localhost:80",
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    LifetimeValidator = this.LifetimeValidator,
-                    IssuerSigningKey = securityKey
-                };
                 //extract and assign the user of the jwt
-                ClaimsPrincipal principal = handler.ValidateToken(token, validationParameters, out securityToken);
+                ClaimsPrincipal principal = TokenHelper.ValidateToken(token, out SecurityToken securityToken);
 
                 Thread.CurrentPrincipal = principal;
 
